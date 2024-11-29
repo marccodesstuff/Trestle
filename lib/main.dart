@@ -7,6 +7,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,16 +22,18 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   List<Document> documents = [
-    Document(title: 'Document 1', blocks: ['Content of Document 1']),
-    Document(title: 'Document 2', blocks: ['Content of Document 2']),
-    Document(title: 'Document 3', blocks: ['Content of Document 3']),
-    Document(title: 'Document 4', blocks: ['Content of Document 4']),
+    Document(title: 'Document 1', blocks: ['Content of Document 1'], fonts: ["Arial"]),
+    Document(title: 'Document 2', blocks: ['Content of Document 2'], fonts: ["Courier"]),
+    Document(title: 'Document 3', blocks: ['Content of Document 3'], fonts: ["Times New Roman"]),
+    Document(title: 'Document 4', blocks: ['Content of Document 4'], fonts: ["Arial"]),
   ];
 
   void _addNewDocument() async {
@@ -37,7 +41,7 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EditDocumentPage(
-          document: Document(title: 'New Document', blocks: ['']),
+          document: Document(title: 'New Document', blocks: [''], fonts: ["Arial"]),
         ),
       ),
     );
@@ -58,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notion Clone'),
+        title: const Text('Notion Clone'),
       ),
       body: ListView.builder(
         itemCount: documents.length,
@@ -83,8 +87,8 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewDocument,
-        child: Icon(Icons.add),
         tooltip: 'New Document',
+        child: Icon(Icons.add),
       ),
     );
   }

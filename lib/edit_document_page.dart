@@ -4,7 +4,7 @@ import 'document_model.dart'; // Updated import
 class EditDocumentPage extends StatefulWidget {
   final Document document;
 
-  EditDocumentPage({required this.document});
+  const EditDocumentPage({super.key, required this.document});
 
   @override
   _EditDocumentPageState createState() => _EditDocumentPageState();
@@ -13,12 +13,16 @@ class EditDocumentPage extends StatefulWidget {
 class _EditDocumentPageState extends State<EditDocumentPage> {
   late TextEditingController _titleController;
   late List<TextEditingController> _blockControllers;
+  late List<String> _selectedFonts;
+
+  final List<String> _availableFonts = ['Arial', 'Courier', 'Times New Roman'];
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.document.title);
     _blockControllers = widget.document.blocks.map((block) => TextEditingController(text: block)).toList();
+    _selectedFonts = widget.document.fonts;
   }
 
   @override
@@ -33,12 +37,14 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
   void _addBlock() {
     setState(() {
       _blockControllers.add(TextEditingController());
+      _selectedFonts.add(_availableFonts.first);
     });
   }
 
   void _removeBlock(int index) {
     setState(() {
       _blockControllers.removeAt(index).dispose();
+      _selectedFonts.removeAt(index);
     });
   }
 
@@ -48,7 +54,9 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
     }
     setState(() {
       final item = _blockControllers.removeAt(oldIndex);
+      final font = _selectedFonts.removeAt(oldIndex);
       _blockControllers.insert(newIndex, item);
+      _selectedFonts.insert(newIndex, font);
     });
   }
 
@@ -56,15 +64,16 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Document'),
+        title: const Text('Edit Document'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: () {
               // Save the edited document
               Navigator.pop(context, Document(
                 title: _titleController.text,
                 blocks: _blockControllers.map((controller) => controller.text).toList(),
+                fonts: _selectedFonts,
               ));
             },
           ),
@@ -76,9 +85,9 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Expanded(
               child: ReorderableListView(
                 onReorder: _onReorder,
@@ -86,14 +95,33 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
                   for (int index = 0; index < _blockControllers.length; index++)
                     ListTile(
                       key: ValueKey(index),
-                      title: TextField(
-                        controller: _blockControllers[index],
-                        decoration: InputDecoration(labelText: 'Block ${index + 1}'),
-                        maxLines: null,
-                        expands: false,
+                      title: Column(
+                        children: [
+                          TextField(
+                            controller: _blockControllers[index],
+                            decoration: InputDecoration(labelText: 'Block ${index + 1}'),
+                            maxLines: null,
+                            expands: false,
+                            style: TextStyle(fontFamily: _selectedFonts[index]),
+                          ),
+                          DropdownButton<String>(
+                            value: _selectedFonts[index],
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedFonts[index] = newValue!;
+                              });
+                            },
+                            items: _availableFonts.map<DropdownMenuItem<String>>((String font) {
+                              return DropdownMenuItem<String>(
+                                value: font,
+                                child: Text(font),
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () => _removeBlock(index),
                       ),
                     ),
@@ -102,7 +130,7 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
             ),
             ElevatedButton(
               onPressed: _addBlock,
-              child: Text('Add Block'),
+              child: const Text('Add Block'),
             ),
           ],
         ),
