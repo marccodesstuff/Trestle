@@ -22,7 +22,6 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
     super.initState();
     _titleController = TextEditingController(text: widget.document.title);
     _blockControllers = widget.document.blocks.map((block) => TextEditingController(text: block)).toList();
-    _selectedFonts = widget.document.fonts;
   }
 
   @override
@@ -73,7 +72,6 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
               Navigator.pop(context, Document(
                 title: _titleController.text,
                 blocks: _blockControllers.map((controller) => controller.text).toList(),
-                fonts: _selectedFonts,
               ));
             },
           ),

@@ -30,10 +30,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Document> documents = [
-    Document(title: 'Document 1', blocks: ['Content of Document 1'], fonts: ["Arial"]),
-    Document(title: 'Document 2', blocks: ['Content of Document 2'], fonts: ["Courier"]),
-    Document(title: 'Document 3', blocks: ['Content of Document 3'], fonts: ["Times New Roman"]),
-    Document(title: 'Document 4', blocks: ['Content of Document 4'], fonts: ["Arial"]),
+    Document(title: 'Document 1', blocks: ['Content of Document 1']),
+    Document(title: 'Document 2', blocks: ['Content of Document 2']),
+    Document(title: 'Document 3', blocks: ['Content of Document 3']),
+    Document(title: 'Document 4', blocks: ['Content of Document 4']),
   ];
 
   void _addNewDocument() async {
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EditDocumentPage(
-          document: Document(title: 'New Document', blocks: [''], fonts: ["Arial"]),
+          document: Document(title: 'New Document', blocks: ['']),
         ),
       ),
     );
