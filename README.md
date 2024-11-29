@@ -1,4 +1,4 @@
-# trestle_demo_day
+# Trestle
 
 A block-based word processor.
 
