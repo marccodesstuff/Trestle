@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'edit_document_page.dart';
 import 'document_model.dart'; // Updated import
+import 'document_storage.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,19 +31,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Document> documents = [
-    Document(title: 'Document 1', blocks: ['Content of Document 1'], fonts: ['Roboto']),
-    Document(title: 'Document 2', blocks: ['Content of Document 2'], fonts: ['Lobster']),
-    Document(title: 'Document 3', blocks: ['Content of Document 3'], fonts: ['Oswald']),
-    Document(title: 'Document 4', blocks: ['Content of Document 4'], fonts: ['Lato']),
-  ];
+  List<Document> documents = [];
+
+  void initState() {
+    super.initState();
+    _loadDocuments();
+  }
+
+  Future<void> _loadDocuments() async {
+    final document = await loadDocument();
+    setState(() {
+      documents.add(document);
+    });
+  }
 
   void _addNewDocument() async {
     final newDocument = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EditDocumentPage(
-          document: Document(title: 'New Document', blocks: [''], fonts: ['Roboto']),
+          document:
+              Document(title: 'New Document', blocks: [''], fonts: ['Roboto']),
         ),
       ),
     );
@@ -65,30 +74,48 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Notion Clone'),
       ),
-      body: ListView.builder(
-        itemCount: documents.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(documents[index].title),
-            onTap: () async {
-              final editedDocument = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditDocumentPage(
-                    document: documents[index],
-                  ),
-                ),
-              );
-              if (editedDocument != null) {
-                _editDocument(index, editedDocument);
-              }
-            },
-          );
-        },
-      ),
+      body: documents.isEmpty
+          ? Center(child: Text('No documents available'))
+          : ListView.builder(
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(documents[index].title),
+                  onTap: () async {
+                    final editedDocument = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditDocumentPage(
+                          document: documents[index],
+                        ),
+                      ),
+                    );
+                    if (editedDocument != null) {
+                      setState(() {
+                        documents[index] = editedDocument;
+                      });
+                    }
+                  },
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addNewDocument,
-        tooltip: 'New Document',
+        onPressed: () async {
+          final newDocument = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditDocumentPage(
+                document: Document(
+                    title: 'New Document', blocks: [''], fonts: ['Roboto']),
+              ),
+            ),
+          );
+          if (newDocument != null) {
+            setState(() {
+              documents.add(newDocument);
+            });
+          }
+        },
         child: Icon(Icons.add),
       ),
     );

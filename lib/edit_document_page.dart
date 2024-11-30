@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'document_model.dart'; // Updated import
 import 'package:google_fonts/google_fonts.dart';
+import 'document_storage.dart';
 
 class EditDocumentPage extends StatefulWidget {
   final Document document;
@@ -75,21 +76,20 @@ class EditDocumentPageState extends State<EditDocumentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Document'),
+        title: Text('Edit Document'),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
-            onPressed: () {
-              // Save the edited document
-              Navigator.pop(
-                  context,
-                  Document(
-                    title: _titleController.text,
-                    blocks: _blockControllers
-                        .map((controller) => controller.text)
-                        .toList(),
-                    fonts: _selectedFonts,
-                  ));
+            onPressed: () async {
+              final document = Document(
+                title: _titleController.text,
+                blocks: _blockControllers
+                    .map((controller) => controller.text)
+                    .toList(),
+                fonts: _selectedFonts,
+              );
+              await saveDocument(document);
+              Navigator.pop(context, document);
             },
           ),
         ],
@@ -120,20 +120,32 @@ class EditDocumentPageState extends State<EditDocumentPage> {
                             expands: false,
                             style: GoogleFonts.getFont(_selectedFonts[index]),
                           ),
-                          DropdownButton<String>(
-                            value: _selectedFonts[index],
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedFonts[index] = newValue!;
-                              });
-                            },
-                            items: _fonts
-                                .map<DropdownMenuItem<String>>((String font) {
-                              return DropdownMenuItem<String>(
-                                value: font,
-                                child: Text(font),
-                              );
-                            }).toList(),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DropdownButton<String>(
+                                  value: _selectedFonts[index],
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedFonts[index] = newValue!;
+                                    });
+                                  },
+                                  items: _fonts.map<DropdownMenuItem<String>>(
+                                      (String font) {
+                                    return DropdownMenuItem<String>(
+                                      value: font,
+                                      child: Text(font),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  _removeBlock(index);
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
