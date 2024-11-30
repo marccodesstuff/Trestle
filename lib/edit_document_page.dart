@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'document_model.dart'; // Updated import
+import 'package:google_fonts/google_fonts.dart';
 
 class EditDocumentPage extends StatefulWidget {
   final Document document;
@@ -7,21 +8,32 @@ class EditDocumentPage extends StatefulWidget {
   const EditDocumentPage({super.key, required this.document});
 
   @override
-  _EditDocumentPageState createState() => _EditDocumentPageState();
+  EditDocumentPageState createState() => EditDocumentPageState();
 }
 
-class _EditDocumentPageState extends State<EditDocumentPage> {
+class EditDocumentPageState extends State<EditDocumentPage> {
   late TextEditingController _titleController;
   late List<TextEditingController> _blockControllers;
-  late List<String> _selectedFonts;
+  final List<String> _selectedFonts = [];
 
-  final List<String> _availableFonts = ['Arial', 'Courier', 'Times New Roman'];
+  final List<String> _fonts = [
+    'Roboto',
+    'Lobster',
+    'Oswald',
+    'Lato',
+    'Merriweather',
+  ];
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.document.title);
-    _blockControllers = widget.document.blocks.map((block) => TextEditingController(text: block)).toList();
+    _blockControllers = widget.document.blocks
+        .map((block) => TextEditingController(text: block))
+        .toList();
+    _selectedFonts.addAll(widget.document.fonts.isNotEmpty
+        ? widget.document.fonts
+        : List.filled(widget.document.blocks.length, "Roboto"));
   }
 
   @override
@@ -36,7 +48,7 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
   void _addBlock() {
     setState(() {
       _blockControllers.add(TextEditingController());
-      _selectedFonts.add(_availableFonts.first);
+      _selectedFonts.add(_fonts.first);
     });
   }
 
@@ -69,10 +81,15 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
             icon: const Icon(Icons.save),
             onPressed: () {
               // Save the edited document
-              Navigator.pop(context, Document(
-                title: _titleController.text,
-                blocks: _blockControllers.map((controller) => controller.text).toList(),
-              ));
+              Navigator.pop(
+                  context,
+                  Document(
+                    title: _titleController.text,
+                    blocks: _blockControllers
+                        .map((controller) => controller.text)
+                        .toList(),
+                    fonts: _selectedFonts,
+                  ));
             },
           ),
         ],
@@ -97,10 +114,11 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
                         children: [
                           TextField(
                             controller: _blockControllers[index],
-                            decoration: InputDecoration(labelText: 'Block ${index + 1}'),
+                            decoration: InputDecoration(
+                                labelText: 'Block ${index + 1}'),
                             maxLines: null,
                             expands: false,
-                            style: TextStyle(fontFamily: _selectedFonts[index]),
+                            style: GoogleFonts.getFont(_selectedFonts[index]),
                           ),
                           DropdownButton<String>(
                             value: _selectedFonts[index],
@@ -109,7 +127,8 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
                                 _selectedFonts[index] = newValue!;
                               });
                             },
-                            items: _availableFonts.map<DropdownMenuItem<String>>((String font) {
+                            items: _fonts
+                                .map<DropdownMenuItem<String>>((String font) {
                               return DropdownMenuItem<String>(
                                 value: font,
                                 child: Text(font),
@@ -117,10 +136,6 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
                             }).toList(),
                           ),
                         ],
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => _removeBlock(index),
                       ),
                     ),
                 ],
