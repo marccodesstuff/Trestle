@@ -9,15 +9,36 @@ class BlocksProvider with ChangeNotifier {
   List<Block> get blocks => _blocks;
 
   void addTextBlock(String content) {
-    final block = Block(id: _uuid.v4(), content: content);
-    _blocks.add(block);
-    notifyListeners();
+    try {
+      final block = Block(id: _uuid.v4(), content: content, type: BlockType.text);
+      _blocks.add(block);
+      notifyListeners();
+    } catch (e) {
+      // Handle error
+      print('Error adding text block: $e');
+    }
+  }
+
+  void addDividerBlock() {
+    try {
+      final block = Block(id: _uuid.v4(), content: '', type: BlockType.divider);
+      _blocks.add(block);
+      notifyListeners();
+    } catch (e) {
+      // Handle error
+      print('Error adding divider block: $e');
+    }
   }
 
   void addImageBlock(String imageUrl) {
-    final block = Block(id: _uuid.v4(), content: '', imageUrl: imageUrl, width: 200.0);
-    _blocks.add(block);
-    notifyListeners();
+    try {
+      final block = Block(id: _uuid.v4(), content: '', imageUrl: imageUrl, width: 200.0, type: BlockType.image);
+      _blocks.add(block);
+      notifyListeners();
+    } catch (e) {
+      // Handle error
+      print('Error adding image block: $e');
+    }
   }
 
   void updateBlock(String id, String content) {

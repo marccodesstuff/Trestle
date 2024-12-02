@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/blocks_provider.dart';
-import 'models/block.dart';
+import 'models/block.dart'; // This is not being used since the application starts at the document immediately instead of the home screen
 
 void main() {
   runApp(MyApp());
@@ -47,62 +47,9 @@ class HomeScreen extends StatelessWidget {
                     for (final block in provider.blocks)
                       ListTile(
                         key: ValueKey(block.id),
-                        title: block.imageUrl != null
-                            ? Stack(
-                          children: [
-                            GestureDetector(
-                              onHorizontalDragUpdate: (details) {
-                                double newWidth = (block.width ?? 200.0) + details.delta.dx;
-                                if (newWidth > 50) {
-                                  provider.resizeImageBlock(block.id, newWidth);
-                                }
-                              },
-                              child: Image.network(
-                                block.imageUrl!,
-                                width: block.width,
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onHorizontalDragUpdate: (details) {
-                                  double newWidth = (block.width ?? 200.0) + details.delta.dx;
-                                  if (newWidth > 50) {
-                                    provider.resizeImageBlock(block.id, newWidth);
-                                  }
-                                },
-                                child: Container(
-                                  width: 10,
-                                  color: Colors.transparent,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onHorizontalDragUpdate: (details) {
-                                  double newWidth = (block.width ?? 200.0) + details.delta.dx;
-                                  if (newWidth > 50) {
-                                    provider.resizeImageBlock(block.id, newWidth);
-                                  }
-                                },
-                                child: Container(
-                                  width: 10,
-                                  color: Colors.transparent,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                            : Text(block.content),
+                        title: _buildBlockContent(block, provider),
                         onTap: () {
-                          if (block.imageUrl == null) {
+                          if (block.type == BlockType.text) {
                             _controller.text = block.content;
                             showDialog(
                               context: context,
@@ -195,8 +142,90 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Provider.of<BlocksProvider>(context, listen: false)
+                          .addDividerBlock();
+                    },
+                    child: Text('Add Divider Block'),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Widget _buildBlockContent(Block block, BlocksProvider provider) {
+    switch (block.type) {
+      case BlockType.text:
+        return Text(block.content);
+      case BlockType.image:
+        return Stack(
+          children: [
+            GestureDetector(
+              onHorizontalDragUpdate: (details) {
+                double newWidth = (block.width ?? 200.0) + details.delta.dx;
+                if (newWidth > 50) {
+                  provider.resizeImageBlock(block.id, newWidth);
+                }
+              },
+              child: Center(
+                child: Image.network(
+                  block.imageUrl!,
+                  width: block.width,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onHorizontalDragUpdate: (details) {
+                  double newWidth = (block.width ?? 200.0) + details.delta.dx;
+                  if (newWidth > 50) {
+                    provider.resizeImageBlock(block.id, newWidth);
+                  }
+                },
+                child: Container(
+                  width: 10,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onHorizontalDragUpdate: (details) {
+                  double newWidth = (block.width ?? 200.0) + details.delta.dx;
+                  if (newWidth > 50) {
+                    provider.resizeImageBlock(block.id, newWidth);
+                  }
+                },
+                child: Container(
+                  width: 10,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+          ],
+        );
+      case BlockType.divider:
+        return Divider();
+      default:
+        return SizedBox.shrink();
+    }
   }
 }
