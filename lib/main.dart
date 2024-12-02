@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EditDocumentPage(
-          document: Document(title: 'New Document', blocks: [Block(type: 'text', content: '')], fonts: ['Roboto']),
+          document: Document(title: 'New Document', blocks: [Block(type: 'text', content: '', index: 0)], fonts: ['Roboto']),
         ),
       ),
     );
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
               builder: (context) => EditDocumentPage(
-                document: Document(title: 'New Document', blocks: [Block(type: 'text', content: '')], fonts: ['Roboto']),
+                document: Document(title: 'New Document', blocks: [Block(type: 'text', content: '', index: 0)], fonts: ['Roboto']),
               ),
             ),
           );

@@ -1,7 +1,7 @@
 import 'block_model.dart';
 
 class DividerBlock extends Block {
-  DividerBlock() : super(type: 'divider', content: '');
+  DividerBlock({required int index}) : super(type: 'divider', content: '', index: index);
 
   @override
   Map<String, dynamic> toJson() {
@@ -9,6 +9,6 @@ class DividerBlock extends Block {
   }
 
   factory DividerBlock.fromJson(Map<String, dynamic> json) {
-    return DividerBlock();
+    return DividerBlock(index: json["index"]);
   }
 }

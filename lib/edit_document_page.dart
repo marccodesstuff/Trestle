@@ -85,7 +85,9 @@ class EditDocumentPageState extends State<EditDocumentPage> {
               final document = Document(
                 title: _titleController.text,
                 blocks: _blockControllers
-                    .map((controller) => Block(type: 'text', content: controller.text))
+                    .asMap()
+                    .entries
+                    .map((entry) => Block(type: 'text', content: entry.value.text, index: entry.key))
                     .toList(),
                 fonts: _selectedFonts,
               );

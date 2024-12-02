@@ -1,15 +1,15 @@
-import 'dart:convert';
-
 class Block {
   String type;
   String content;
+  int index;
 
-  Block({required this.type, required this.content});
+  Block({required this.type, required this.content, required this.index});
 
   Map<String, dynamic> toJson() {
     return {
       "type": type,
       "content": content,
+      "index": index,
     };
   }
 
@@ -17,6 +17,7 @@ class Block {
     return Block(
       type: json["type"],
       content: json["content"],
+      index: json["index"],
     );
   }
 }

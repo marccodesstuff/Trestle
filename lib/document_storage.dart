@@ -26,6 +26,6 @@ Future<Document> loadDocument() async {
     return Document.fromJson(jsonDecode(contents));
   } catch (e) {
     // If encountering an error, return an empty document
-    return Document(title: 'New Document', blocks: [Block(type: 'text', content: '')], fonts: ['Roboto']);
+    return Document(title: 'New Document', blocks: [Block(type: 'text', content: '', index: 0)], fonts: ['Roboto']);
   }
 }
