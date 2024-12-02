@@ -8,9 +8,14 @@ class BlocksProvider with ChangeNotifier {
 
   List<Block> get blocks => _blocks;
 
-  void addTextBlock(String content) {
+  void addTextBlock(String content, BlockAlignment alignment) {
     try {
-      final block = Block(id: _uuid.v4(), content: content, type: BlockType.text);
+      final block = Block(
+        id: _uuid.v4(),
+        content: content,
+        type: BlockType.text,
+        alignment: alignment,
+      );
       _blocks.add(block);
       notifyListeners();
     } catch (e) {
