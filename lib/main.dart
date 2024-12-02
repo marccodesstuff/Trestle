@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/blocks_provider.dart';
-import 'models/block.dart'; // This is not being used since the application starts at the document immediately instead of the home screen
+import 'models/block.dart';
 import 'providers/theme_provider.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 void main() {
   runApp(MyApp());
@@ -66,7 +67,7 @@ class HomeScreen extends StatelessWidget {
                     for (final block in provider.blocks)
                       ListTile(
                         key: ValueKey(block.id),
-                        title: _buildBlockContent(block, provider),
+                        title: _buildBlockContent(context, block, provider),
                         onTap: () {
                           if (block.type == BlockType.text) {
                             _controller.text = block.content;
@@ -203,7 +204,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBlockContent(Block block, BlocksProvider provider) {
+  Widget _buildBlockContent(BuildContext context, Block block, BlocksProvider provider) {
     TextAlign textAlign;
     switch (block.alignment) {
       case BlockAlignment.center:
@@ -223,7 +224,10 @@ class HomeScreen extends StatelessWidget {
 
     switch (block.type) {
       case BlockType.text:
-        return Text(block.content, textAlign: textAlign);
+        return MarkdownBody(
+          data: block.content,
+          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith()
+        );
       case BlockType.image:
         return Stack(
           children: [
