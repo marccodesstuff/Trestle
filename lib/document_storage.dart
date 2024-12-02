@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'document_model.dart';
-import 'block_model.dart';
+import 'models/document_model.dart';
+import 'models/block_model.dart';
 
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();

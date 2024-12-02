@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'edit_document_page.dart';
-import 'document_model.dart';
+import 'models/document_model.dart';
 import 'document_storage.dart';
-import 'block_model.dart';
+import 'models/block_model.dart';
 
 void main() {
   runApp(MyApp());

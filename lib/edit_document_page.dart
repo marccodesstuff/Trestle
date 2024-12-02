@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'document_model.dart'; // Updated import
+import 'models/document_model.dart'; // Updated import
 import 'package:google_fonts/google_fonts.dart';
 import 'document_storage.dart';
-import 'block_model.dart'; // Updated import
+import 'models/block_model.dart'; // Updated import
 
 class EditDocumentPage extends StatefulWidget {
   final Document document;
