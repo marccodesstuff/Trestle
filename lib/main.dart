@@ -226,7 +226,7 @@ class HomeScreen extends StatelessWidget {
       case BlockType.text:
         return MarkdownBody(
           data: block.content,
-          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith()
+          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(),
         );
       case BlockType.image:
         return Stack(
