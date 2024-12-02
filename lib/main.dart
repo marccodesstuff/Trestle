@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'edit_document_page.dart';
-import 'document_model.dart'; // Updated import
+import 'document_model.dart';
 import 'document_storage.dart';
+import 'block_model.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,8 +51,7 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EditDocumentPage(
-          document:
-              Document(title: 'New Document', blocks: [''], fonts: ['Roboto']),
+          document: Document(title: 'New Document', blocks: [Block(type: 'text', content: '')], fonts: ['Roboto']),
         ),
       ),
     );
@@ -77,36 +77,35 @@ class _HomePageState extends State<HomePage> {
       body: documents.isEmpty
           ? Center(child: Text('No documents available'))
           : ListView.builder(
-              itemCount: documents.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(documents[index].title),
-                  onTap: () async {
-                    final editedDocument = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditDocumentPage(
-                          document: documents[index],
-                        ),
-                      ),
-                    );
-                    if (editedDocument != null) {
-                      setState(() {
-                        documents[index] = editedDocument;
-                      });
-                    }
-                  },
-                );
-              },
-            ),
+        itemCount: documents.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(documents[index].title),
+            onTap: () async {
+              final editedDocument = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditDocumentPage(
+                    document: documents[index],
+                  ),
+                ),
+              );
+              if (editedDocument != null) {
+                setState(() {
+                  documents[index] = editedDocument;
+                });
+              }
+            },
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final newDocument = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => EditDocumentPage(
-                document: Document(
-                    title: 'New Document', blocks: [''], fonts: ['Roboto']),
+                document: Document(title: 'New Document', blocks: [Block(type: 'text', content: '')], fonts: ['Roboto']),
               ),
             ),
           );

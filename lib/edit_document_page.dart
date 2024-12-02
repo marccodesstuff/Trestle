@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'document_model.dart'; // Updated import
 import 'package:google_fonts/google_fonts.dart';
 import 'document_storage.dart';
+import 'block_model.dart'; // Updated import
 
 class EditDocumentPage extends StatefulWidget {
   final Document document;
@@ -30,7 +31,7 @@ class EditDocumentPageState extends State<EditDocumentPage> {
     super.initState();
     _titleController = TextEditingController(text: widget.document.title);
     _blockControllers = widget.document.blocks
-        .map((block) => TextEditingController(text: block))
+        .map((block) => TextEditingController(text: block.content))
         .toList();
     _selectedFonts.addAll(widget.document.fonts.isNotEmpty
         ? widget.document.fonts
@@ -84,7 +85,7 @@ class EditDocumentPageState extends State<EditDocumentPage> {
               final document = Document(
                 title: _titleController.text,
                 blocks: _blockControllers
-                    .map((controller) => controller.text)
+                    .map((controller) => Block(type: 'text', content: controller.text))
                     .toList(),
                 fonts: _selectedFonts,
               );
@@ -131,12 +132,12 @@ class EditDocumentPageState extends State<EditDocumentPage> {
                                     });
                                   },
                                   items: _fonts.map<DropdownMenuItem<String>>(
-                                      (String font) {
-                                    return DropdownMenuItem<String>(
-                                      value: font,
-                                      child: Text(font),
-                                    );
-                                  }).toList(),
+                                          (String font) {
+                                        return DropdownMenuItem<String>(
+                                          value: font,
+                                          child: Text(font),
+                                        );
+                                      }).toList(),
                                 ),
                               ),
                               IconButton(
