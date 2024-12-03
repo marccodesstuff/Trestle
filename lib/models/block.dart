@@ -20,5 +20,4 @@ enum BlockAlignment
   left,
   center,
   right,
-  justified,
 }

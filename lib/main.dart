@@ -205,28 +205,28 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBlockContent(BuildContext context, Block block, BlocksProvider provider) {
-    TextAlign textAlign;
+    Alignment _textAlign;
     switch (block.alignment) {
       case BlockAlignment.center:
-        textAlign = TextAlign.center;
+        _textAlign = Alignment.center;
         break;
       case BlockAlignment.right:
-        textAlign = TextAlign.right;
-        break;
-      case BlockAlignment.justified:
-        textAlign = TextAlign.justify;
+        _textAlign = Alignment.centerRight;
         break;
       case BlockAlignment.left:
       default:
-        textAlign = TextAlign.left;
+        _textAlign = Alignment.centerLeft;
         break;
     }
 
     switch (block.type) {
       case BlockType.text:
-        return MarkdownBody(
-          data: block.content,
-          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(),
+        return Container(
+          alignment: _textAlign,
+          child: MarkdownBody(
+            data: block.content,
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
+          ),
         );
       case BlockType.image:
         return Stack(
