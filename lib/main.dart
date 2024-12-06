@@ -339,9 +339,25 @@ class HomeScreen extends StatelessWidget {
               _applyTextAlignment(context, block, BlockAlignment.right);
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.format_list_bulleted),
+            onPressed: () {
+              _toggleUnorderedList();
+            },
+          ),
         ],
       ),
     );
+  }
+
+  void _toggleUnorderedList() {
+    final text = _controller.text;
+    if (text.startsWith('- ')) {
+      _controller.text = text.substring(2);
+    } else {
+      _controller.text = '- $text';
+    }
+    _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
   }
 
   void _applyMarkdownFormatting(String markdownSymbol) {
