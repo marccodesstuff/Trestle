@@ -10,6 +10,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -36,14 +38,16 @@ class HomeScreen extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
 
+  HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Block-based Word Processor'),
+        title: const Text('Block-based Word Processor'),
         actions: [
           IconButton(
-            icon: Icon(Icons.brightness_6),
+            icon: const Icon(Icons.brightness_6),
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
@@ -75,20 +79,26 @@ class HomeScreen extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: Text('Edit Block'),
-                                content: TextField(
-                                  controller: _controller,
-                                  onSubmitted: (value) {
-                                    provider.updateBlock(block.id, value);
-                                    Navigator.of(context).pop();
-                                  },
+                                title: const Text('Edit Block'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextField(
+                                      controller: _controller,
+                                      onSubmitted: (value) {
+                                        provider.updateBlock(block.id, value);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    _buildToolbar(context),
+                                  ],
                                 ),
                               ),
                             );
                           }
                         },
                         trailing: IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           onPressed: () {
                             provider.deleteBlock(block.id);
                           },
@@ -106,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Add Text Block',
                     ),
                     onSubmitted: (value) {
@@ -117,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: () {
                     if (_controller.text.isNotEmpty) {
                       _showAlignmentDialog(context, _controller.text);
@@ -134,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: _imageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Add Image URL',
                     ),
                     onSubmitted: (value) {
@@ -147,7 +157,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: () {
                     if (_imageController.text.isNotEmpty) {
                       Provider.of<BlocksProvider>(context, listen: false)
@@ -169,7 +179,7 @@ class HomeScreen extends StatelessWidget {
                       Provider.of<BlocksProvider>(context, listen: false)
                           .addDividerBlock();
                     },
-                    child: Text('Add Divider Block'),
+                    child: const Text('Add Divider Block'),
                   ),
                 ),
               ],
@@ -185,7 +195,7 @@ class HomeScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Select Alignment'),
+          title: const Text('Select Alignment'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: BlockAlignment.values.map((alignment) {
@@ -205,25 +215,26 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBlockContent(BuildContext context, Block block, BlocksProvider provider) {
-    Alignment _textAlign;
+  Widget _buildBlockContent(
+      BuildContext context, Block block, BlocksProvider provider) {
+    Alignment textAlign;
     switch (block.alignment) {
       case BlockAlignment.center:
-        _textAlign = Alignment.center;
+        textAlign = Alignment.center;
         break;
       case BlockAlignment.right:
-        _textAlign = Alignment.centerRight;
+        textAlign = Alignment.centerRight;
         break;
       case BlockAlignment.left:
       default:
-        _textAlign = Alignment.centerLeft;
+        textAlign = Alignment.centerLeft;
         break;
     }
 
     switch (block.type) {
       case BlockType.text:
         return Container(
-          alignment: _textAlign,
+          alignment: textAlign,
           child: MarkdownBody(
             data: block.content,
             styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
@@ -285,9 +296,51 @@ class HomeScreen extends StatelessWidget {
           ],
         );
       case BlockType.divider:
-        return Divider();
+        return const Divider();
       default:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
     }
+  }
+
+  Widget _buildToolbar(BuildContext context) {
+    return Container(
+      color: Colors.grey[200],
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.format_bold),
+            onPressed: () {
+              // Add logic for bold text
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.format_italic),
+            onPressed: () {
+              // Add logic for italic text
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.format_align_left),
+            onPressed: () {
+              // Add logic for left alignment
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.format_align_center),
+            onPressed: () {
+              // Add logic for center alignment
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.format_align_right),
+            onPressed: () {
+              // Add logic for right alignment
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

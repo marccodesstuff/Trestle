@@ -4,7 +4,7 @@ import '../models/block.dart';
 
 class BlocksProvider with ChangeNotifier {
   final List<Block> _blocks = [];
-  final Uuid _uuid = Uuid();
+  final Uuid _uuid = const Uuid();
 
   List<Block> get blocks => _blocks;
 
@@ -37,7 +37,12 @@ class BlocksProvider with ChangeNotifier {
 
   void addImageBlock(String imageUrl) {
     try {
-      final block = Block(id: _uuid.v4(), content: '', imageUrl: imageUrl, width: 200.0, type: BlockType.image);
+      final block = Block(
+          id: _uuid.v4(),
+          content: '',
+          imageUrl: imageUrl,
+          width: 200.0,
+          type: BlockType.image);
       _blocks.add(block);
       notifyListeners();
     } catch (e) {
