@@ -90,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                                         Navigator.of(context).pop();
                                       },
                                     ),
-                                    _buildToolbar(context),
+                                    _buildToolbar(context, block),
                                   ],
                                 ),
                               ),
@@ -302,7 +302,7 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  Widget _buildToolbar(BuildContext context) {
+  Widget _buildToolbar(BuildContext context, Block block) {
     return Container(
       color: Colors.grey[200],
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -324,19 +324,19 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.format_align_left),
             onPressed: () {
-              // Add logic for left alignment
+              _applyTextAlignment(context, block, BlockAlignment.left);
             },
           ),
           IconButton(
             icon: const Icon(Icons.format_align_center),
             onPressed: () {
-              // Add logic for center alignment
+              _applyTextAlignment(context, block, BlockAlignment.center);
             },
           ),
           IconButton(
             icon: const Icon(Icons.format_align_right),
             onPressed: () {
-              // Add logic for right alignment
+              _applyTextAlignment(context, block, BlockAlignment.right);
             },
           ),
         ],
@@ -359,5 +359,11 @@ class HomeScreen extends StatelessWidget {
         selection: TextSelection.collapsed(offset: selection.end + markdownSymbol.length * 2),
       );
     }
+  }
+
+  void _applyTextAlignment(BuildContext context, Block block, BlockAlignment alignment) {
+    Provider.of<BlocksProvider>(context, listen: false).updateBlock(block.id, _controller.text);
+    block.alignment = alignment;
+    Provider.of<BlocksProvider>(context, listen: false).notifyListeners();
   }
 }
