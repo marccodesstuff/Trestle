@@ -1,5 +1,5 @@
-name: notion_clone
-description: A Notion-like application built with Flutter
+name: Trestle
+description: A block-based word processor that auto-layouts your content.
 publish_to: 'none'
 version: 1.0.0+1
 
