@@ -312,7 +312,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.format_bold),
             onPressed: () {
-              // Add logic for bold text
+              _applyMarkdownFormatting('**');
             },
           ),
           IconButton(
@@ -342,5 +342,22 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _applyMarkdownFormatting(String markdownSymbol) {
+    final text = _controller.text;
+    final selection = _controller.selection;
+    if (selection.isValid) {
+      final selectedText = text.substring(selection.start, selection.end);
+      final newText = text.replaceRange(
+        selection.start,
+        selection.end,
+        '$markdownSymbol$selectedText$markdownSymbol',
+      );
+      _controller.value = _controller.value.copyWith(
+        text: newText,
+        selection: TextSelection.collapsed(offset: selection.end + markdownSymbol.length * 2),
+      );
+    }
   }
 }
