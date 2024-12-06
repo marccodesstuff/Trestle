@@ -318,7 +318,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.format_italic),
             onPressed: () {
-              // Add logic for italic text
+              _applyMarkdownFormatting('_');
             },
           ),
           IconButton(
