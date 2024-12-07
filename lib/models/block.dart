@@ -14,15 +14,6 @@ class Block {
     required this.type,
     this.alignment = BlockAlignment.left
   });
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'content': content,
-    'imageUrl': imageUrl,
-    'width': width,
-    'type': type.toString().split('.').last,
-    'alignment': alignment.toString().split('.').last,
-  };
 }
 
 enum BlockType {
