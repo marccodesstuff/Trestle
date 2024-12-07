@@ -49,24 +49,22 @@ class HomeScreen extends StatelessWidget {
                             _controller.text = block.content;
                             showDialog(
                               context: context,
-                              builder: (context) =>
-                                  AlertDialog(
-                                    title: const Text('Edit Block'),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        TextField(
-                                          controller: _controller,
-                                          onSubmitted: (value) {
-                                            provider.updateBlock(
-                                                block.id, value);
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                        _buildToolbar(context, block),
-                                      ],
+                              builder: (context) => AlertDialog(
+                                title: const Text('Edit Block'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextField(
+                                      controller: _controller,
+                                      onSubmitted: (value) {
+                                        provider.updateBlock(block.id, value);
+                                        Navigator.of(context).pop();
+                                      },
                                     ),
-                                  ),
+                                    _buildToolbar(context, block),
+                                  ],
+                                ),
+                              ),
                             );
                           }
                         },
@@ -173,10 +171,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: BlockAlignment.values.map((alignment) {
               return ListTile(
-                title: Text(alignment
-                    .toString()
-                    .split('.')
-                    .last),
+                title: Text(alignment.toString().split('.').last),
                 onTap: () {
                   Provider.of<BlocksProvider>(context, listen: false)
                       .addTextBlock(content, alignment);
@@ -191,8 +186,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBlockContent(BuildContext context, Block block,
-      BlocksProvider provider) {
+  Widget _buildBlockContent(
+      BuildContext context, Block block, BlocksProvider provider) {
     Alignment textAlign;
     switch (block.alignment) {
       case BlockAlignment.center:
@@ -355,10 +350,10 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  void _applyTextAlignment(BuildContext context, Block block,
-      BlockAlignment alignment) {
-    Provider.of<BlocksProvider>(context, listen: false).updateBlock(
-        block.id, _controller.text);
+  void _applyTextAlignment(
+      BuildContext context, Block block, BlockAlignment alignment) {
+    Provider.of<BlocksProvider>(context, listen: false)
+        .updateBlock(block.id, _controller.text);
     block.alignment = alignment;
     Provider.of<BlocksProvider>(context, listen: false).notifyListeners();
   }

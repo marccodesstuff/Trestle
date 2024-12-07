@@ -1,6 +1,6 @@
-# trestle_demo_day
+# myapp
 
-A block-based word processor.
+A new Flutter project.
 
 ## Getting Started
 

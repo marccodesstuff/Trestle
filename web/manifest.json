@@ -1,11 +1,11 @@
 {
-    "name": "trestle_demo_day",
-    "short_name": "trestle_demo_day",
+    "name": "myapp",
+    "short_name": "myapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A block-based word processor.",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
