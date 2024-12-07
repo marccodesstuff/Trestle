@@ -23,6 +23,10 @@ class HomeScreen extends StatelessWidget {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () {}
+          ),
         ],
       ),
       body: Column(
