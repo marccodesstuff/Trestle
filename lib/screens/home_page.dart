@@ -1,119 +1,59 @@
-import 'package:Trestle/screens/docs.dart';
 import 'package:flutter/material.dart';
-import '../utils/appwrite_client.dart';
-import 'auth_pages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
-  final List<Document> documents = [
-    Document(name: 'Document 1', description: 'Description 1'),
-    Document(name: 'Document 2', description: 'Description 2'),
-    // Add more documents here
-  ];
+import '../widgets/note_card.dart';
+import '../widgets/main_sidenav.dart';
 
-  Future<String?> _getEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('email');
-  }
+class WelcomeScreen extends StatelessWidget {
+  final String userName;
+
+  const WelcomeScreen({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Documents'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () => _logout(context),
-          ),
-        ],
+        title: const Text('Trestle'),
       ),
-      body: Column(
-        children: [
-          FutureBuilder<String?>(
-            future: _getEmail(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text('Error: ${snapshot.error}'),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Hello',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Hello ${snapshot.data}',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                );
-              }
-            },
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: documents.length,
-              itemBuilder: (context, index) {
-                final document = documents[index];
-                return Card(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DocsScreen()),
-                      );
-                    },
-                    child: ListTile(
-                      title: Text(document.name),
-                      subtitle: Text(document.description),
-                    ),
-                  ),
-                );
-              },
+      drawer: const SideNavigationBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                'Welcome to Trestle, $userName',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DocsScreen()),
-          );
-        },
-        child: Icon(Icons.add),
-        tooltip: 'Add Document',
+            const SizedBox(height: 32),
+            // Recent Notes Section
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Recents',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 16),
+                GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: 1.5,
+                  children: const [
+                    NoteCard(title: 'Note 1', content: 'Content for Note 1'),
+                    NoteCard(title: 'Note 2', content: 'Content for Note 2'),
+                    // ... other notes
+                  ],
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
-
-  void _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    await prefs.remove('email');
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
-}
-
-class Document {
-  final String name;
-  final String description;
-
-  Document({required this.name, required this.description});
 }
