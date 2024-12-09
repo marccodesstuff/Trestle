@@ -29,6 +29,39 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Column(
+        children: [
+          FutureBuilder<String?>(
+            future: _getEmail(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Hello',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Hello ${snapshot.data}',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                );
+              }
+            },
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: documents.length,
