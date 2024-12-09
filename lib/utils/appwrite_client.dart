@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 
 Client client = Client();
 Account account = Account(client);
+Databases databases = Databases(client);
 
 void initAppWrite() {
   client
