@@ -1,4 +1,6 @@
+import 'package:Trestle/screens/docs.dart';
 import 'package:flutter/material.dart';
+import '../utils/appwrite_client.dart';
 
 class HomePage extends StatelessWidget {
   final List<Document> documents = [
@@ -18,16 +20,28 @@ class HomePage extends StatelessWidget {
         itemBuilder: (context, index) {
           final document = documents[index];
           return Card(
-            child: ListTile(
-              title: Text(document.name),
-              subtitle: Text(document.description),
+            child: InkWell(
+              onTap: () {
+                // Handle the tap event here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DocsScreen()),
+                );
+              },
+              child: ListTile(
+                title: Text(document.name),
+                subtitle: Text(document.description),
+              ),
             ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Handle button press
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DocsScreen()),
+          );
         },
         child: Icon(Icons.add),
         tooltip: 'Add Document',
