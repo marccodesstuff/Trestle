@@ -18,8 +18,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       Account account = Account(client);
       await account.createEmailPasswordSession(
-          email: _emailController.text,
-          password: _passwordController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
       );
       print("Login successful");
 
@@ -42,20 +42,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignUpPage()),
-              );
-            },
-            child: Text(
-              'Sign Up',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -74,6 +60,19 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               child: const Text('Login'),
+            ),
+            Spacer(),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                );
+              },
+              child: Text(
+                'Sign Up',
+                style: TextStyle(color: Colors.blue),
+              ),
             ),
           ],
         ),
