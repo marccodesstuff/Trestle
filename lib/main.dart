@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'providers/blocks_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/docs.dart';
@@ -11,6 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  await dotenv.load(fileName: ".env"); // Change this if you use a different name
 
   runApp(MyApp(isLoggedIn: isLoggedIn));
 }

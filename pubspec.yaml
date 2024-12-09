@@ -19,6 +19,7 @@ dependencies:
   google_fonts: ^3.0.1
   flutter_markdown: ^0.7.4+3
   appwrite: ^13.0.0
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
