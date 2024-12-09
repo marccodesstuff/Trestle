@@ -111,20 +111,6 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign Up'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            child: Text(
-              'Login',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -143,6 +129,19 @@ class _SignUpPageState extends State<SignUpPage> {
             ElevatedButton(
               onPressed: _signUp,
               child: const Text('Sign Up'),
+            ),
+            Spacer(),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Text(
+                'Login',
+                style: TextStyle(color: Colors.blue),
+              ),
             ),
           ],
         ),
