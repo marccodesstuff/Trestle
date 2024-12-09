@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
-import 'document_page.dart';
+import 'documents_page.dart';
+import 'settings_screen.dart';
+import '../models/document_model.dart';
 import '../utils/appwrite.dart';
+import '../models/block_model.dart'; // Adjust the path as necessary
 
 class HomeScreen extends StatelessWidget {
   final AppwriteService appwriteService = AppwriteService();
@@ -39,7 +42,10 @@ class HomeScreen extends StatelessWidget {
               leading: Icon(Icons.settings),
               title: Text('Settings'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
               },
             ),
             ListTile(
@@ -69,13 +75,21 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          final sampleDocument = Document(
+            title: 'Sample Document',
+            blocks: [
+              Block.textBlock('Sample Text Block', 0),
+              Block.imageBlock('https://via.placeholder.com/150', 1),
+            ],
+          );
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DocumentPage(documentTitle: 'New Document')),
+            MaterialPageRoute(
+              builder: (context) => DocumentPage(document: sampleDocument),
+            ),
           );
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
       ),
     );
   }
