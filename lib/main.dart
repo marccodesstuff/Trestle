@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/blocks_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/docs.dart';
 import 'screens/auth_pages.dart';
+import 'screens/home_page.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+
+  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class MyApp extends StatelessWidget {
             ),
             darkTheme: ThemeData.dark(),
             themeMode: themeProvider.themeMode,
-            home: LoginPage(),
+            home: isLoggedIn ? HomePage() : LoginPage(),
             routes: {
               '/login': (context) => LoginPage(),
               '/signup': (context) => SignUpPage(),

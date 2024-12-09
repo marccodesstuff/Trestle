@@ -1,6 +1,8 @@
 import 'package:Trestle/screens/docs.dart';
 import 'package:flutter/material.dart';
 import '../utils/appwrite_client.dart';
+import 'auth_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   final List<Document> documents = [
@@ -9,32 +11,47 @@ class HomePage extends StatelessWidget {
     // Add more documents here
   ];
 
+  Future<String?> _getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Documents'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () => _logout(context),
+          ),
+        ],
       ),
-      body: ListView.builder(
-        itemCount: documents.length,
-        itemBuilder: (context, index) {
-          final document = documents[index];
-          return Card(
-            child: InkWell(
-              onTap: () {
-                // Handle the tap event here
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DocsScreen()),
+      body: Column(
+          Expanded(
+            child: ListView.builder(
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                final document = documents[index];
+                return Card(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DocsScreen()),
+                      );
+                    },
+                    child: ListTile(
+                      title: Text(document.name),
+                      subtitle: Text(document.description),
+                    ),
+                  ),
                 );
               },
-              child: ListTile(
-                title: Text(document.name),
-                subtitle: Text(document.description),
-              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -46,6 +63,17 @@ class HomePage extends StatelessWidget {
         child: Icon(Icons.add),
         tooltip: 'Add Document',
       ),
+    );
+  }
+
+  void _logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    await prefs.remove('email');
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:appwrite/appwrite.dart';
 import '../utils/appwrite_client.dart';
 import 'docs.dart';
 import 'home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -21,6 +22,12 @@ class _LoginPageState extends State<LoginPage> {
           password: _passwordController.text,
       );
       print("Login successful");
+
+      // Save login state and email
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('email', _emailController.text);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
