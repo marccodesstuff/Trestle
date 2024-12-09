@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
             Spacer(),
             TextButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => SignUpPage()),
                 );
@@ -133,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Spacer(),
             TextButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
