@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 import '../utils/appwrite_client.dart';
-import 'docs.dart';
 import 'home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
