@@ -15,7 +15,7 @@ class ImageBlock extends StatelessWidget {
 }
 
 class AppWriteService {
-  Future<void> saveDocument(String documentTitle, List<Widget> blocks) async {
+  Future<void> saveNewDocument(String documentTitle, List<Widget> blocks) async {
     final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject('675448ef003e37a9488a');
     final _databases = Databases(client);
     try {

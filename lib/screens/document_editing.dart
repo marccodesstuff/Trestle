@@ -47,10 +47,11 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
   }
 
   void _saveDocument() async {
-    await _appWriteService.saveDocument(_titleController.text, _blocks);
+    await _appWriteService.saveNewDocument(_titleController.text, _blocks);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Document saved successfully')),
     );
+    Navigator.of(context).pop();
   }
 
   @override
