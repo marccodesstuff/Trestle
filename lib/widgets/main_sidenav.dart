@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/home_page.dart';
+import '../screens/home_page.dart';
 import '../screens/favorites_page.dart';
 import '../screens/document_editing.dart';
 import '../screens/settings_page.dart';
@@ -46,9 +46,7 @@ class SideNavigationBar extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const WelcomeScreen(userName: "Admin")),
+                MaterialPageRoute(builder: (context) => const HomePage()),
               );
             },
           ),
@@ -65,7 +63,7 @@ class SideNavigationBar extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FavoritesPage()),
+                MaterialPageRoute(builder: (context) => const FavoritesPage()),
               );
             },
           ),
@@ -75,7 +73,7 @@ class SideNavigationBar extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage()),
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
               );
             },
           ),
