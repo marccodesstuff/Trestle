@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../services/appwrite_service.dart'; // Import the AppWriteService
+import '../widgets/toolbar.dart'; // Import the Toolbar
 
 class DocumentEditorPage extends StatefulWidget {
   final String documentTitle;
@@ -9,15 +10,6 @@ class DocumentEditorPage extends StatefulWidget {
 
   @override
   _DocumentEditorPageState createState() => _DocumentEditorPageState();
-}
-
-class EditDocumentPage extends StatefulWidget {
-  final String documentId;
-
-  const EditDocumentPage({super.key, required this.documentId});
-
-  @override
-  _EditDocumentPageState createState() => _EditDocumentPageState();
 }
 
 class _DocumentEditorPageState extends State<DocumentEditorPage> {
@@ -113,132 +105,9 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
             .values
             .toList(),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.text_fields),
-              onPressed: _addTextBlock,
-            ),
-            IconButton(
-              icon: const Icon(Icons.image),
-              onPressed: _addImageBlock,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _EditDocumentPageState extends State<DocumentEditorPage> {
-  final List<Widget> _blocks = [];
-  late TextEditingController _titleController;
-  final AppWriteService _appWriteService = AppWriteService(); // Initialize AppWriteService
-
-  @override
-  void initState() {
-    super.initState();
-    _titleController = TextEditingController(text: widget.documentTitle);
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    super.dispose();
-  }
-
-  void _addTextBlock() {
-    setState(() {
-      _blocks.add(TextField(
-        controller: TextEditingController(), // Assign a controller
-        decoration: const InputDecoration(
-          hintText: 'Enter text here',
-          contentPadding: EdgeInsets.zero, // Remove padding around text
-        ),
-      ));
-    });
-  }
-
-  void _addImageBlock() {
-    setState(() {
-      _blocks.add(const ImageBlock());
-    });
-  }
-
-  void _updateDocument() async {
-    await _appWriteService.saveOldDocument(_titleController.text, _blocks);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Document saved successfully')),
-    );
-    Navigator.of(context).pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _titleController,
-          decoration: const InputDecoration(hintText: 'Document Title'),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _updateDocument, // Call the save function
-          ),
-        ],
-      ),
-      body: ReorderableListView(
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (newIndex > oldIndex) {
-              newIndex -= 1;
-            }
-            final Widget item = _blocks.removeAt(oldIndex);
-            _blocks.insert(newIndex, item);
-          });
-        },
-        children: _blocks
-            .asMap()
-            .map((index, block) => MapEntry(
-                index,
-                IntrinsicHeight(
-                  key: ValueKey(index), // Add a unique key for each widget
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0), // Add padding
-                          child: block,
-                        ),
-                      ),
-                      ReorderableDragStartListener(
-                        index: index,
-                        child: const Icon(Icons.drag_handle),
-                      ),
-                    ],
-                  ),
-                )))
-            .values
-            .toList(),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.text_fields),
-              onPressed: _addTextBlock,
-            ),
-            IconButton(
-              icon: const Icon(Icons.image),
-              onPressed: _addImageBlock,
-            ),
-          ],
-        ),
+      bottomNavigationBar: Toolbar(
+        onAddTextBlock: _addTextBlock,
+        onAddImageBlock: _addImageBlock,
       ),
     );
   }

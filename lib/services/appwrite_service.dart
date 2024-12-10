@@ -2,10 +2,10 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert'; // Import for JSON encoding
 
-class ImageBlock extends StatelessWidget {
+class ImageBlockWut extends StatelessWidget {
   final String imageUrl;
 
-  ImageBlock({required this.imageUrl});
+  ImageBlockWut({required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,10 @@ class AppWriteService {
             'type': 'text',
             'content': (block.controller as TextEditingController).text,
           };
-        } else if (block is ImageBlock) {
+        } else if (block is ImageBlockWut) {
           return {
             'type': 'image',
-            'url': (block as ImageBlock).imageUrl,
+            'url': (block as ImageBlockWut).imageUrl,
           };
         }
         return {};
@@ -77,10 +77,10 @@ class AppWriteService {
             'type': 'text',
             'content': (block.controller as TextEditingController).text,
           };
-        } else if (block is ImageBlock) {
+        } else if (block is ImageBlockWut) {
           return {
             'type': 'image',
-            'url': (block as ImageBlock).imageUrl,
+            'url': (block as ImageBlockWut).imageUrl,
           };
         }
         return {};
@@ -126,6 +126,22 @@ class AppWriteService {
     } catch (e) {
       print('Error fetching recent documents: $e');
       return [];
+    }
+  }
+
+  Future<Map<String, dynamic>?> fetchDocumentById(String documentId) async {
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject('675448ef003e37a9488a');
+    final _databases = Databases(client);
+    try {
+      final response = await _databases.getDocument(
+        databaseId: 'trestle_notes',
+        collectionId: 'trestle_docs',
+        documentId: documentId,
+      );
+      return response.data;
+    } catch (e) {
+      print('Error fetching document: $e');
+      return null;
     }
   }
 }

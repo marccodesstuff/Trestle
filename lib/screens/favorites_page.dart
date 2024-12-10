@@ -40,13 +40,19 @@ class FavoritesPage extends StatelessWidget {
                     crossAxisSpacing: 16.0,
                     mainAxisSpacing: 16.0,
                     childAspectRatio: 1.5,
-                    children: const [
+                    children: [
                       // Replace with your actual favorites data
                       NoteCard(
-                        title: 'Favorite Document 1'
+                        title: 'Favorite Document 1',
+                        onTap: () {
+                          // Add your onTap functionality here
+                        },
                       ),
                       NoteCard(
-                        title: 'Favorite Document 2'
+                        title: 'Favorite Document 2',
+                        onTap: () {
+                          // Add your onTap functionality here
+                        },
                       ),
                       // ... more NoteCard widgets
                     ],

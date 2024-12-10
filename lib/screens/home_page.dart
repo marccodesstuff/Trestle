@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/appwrite_service.dart';
 import '../widgets/note_card.dart';
 import '../widgets/main_sidenav.dart';
+import 'edit_document_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
   final String userName;
@@ -62,7 +63,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       itemCount: _recentDocuments.length,
                       itemBuilder: (context, index) {
                         final document = _recentDocuments[index];
-                        return NoteCard(title: document['title']);
+                        return NoteCard(
+                          title: document['title'],
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditDocumentPage(documentId: document['\$id']),
+                              ),
+                            );
+                          },
+                        );
                       },
                     ),
             ],
