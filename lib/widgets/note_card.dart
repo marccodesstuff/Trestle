@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class NoteCard extends StatelessWidget {
   final String title;
-  final String content;
 
-  const NoteCard({super.key, required this.title, required this.content});
+  const NoteCard({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +21,6 @@ class NoteCard extends StatelessWidget {
               title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
-            Text(content),
           ],
         ),
       ),

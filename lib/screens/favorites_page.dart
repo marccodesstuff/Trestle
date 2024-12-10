@@ -43,12 +43,10 @@ class FavoritesPage extends StatelessWidget {
                     children: const [
                       // Replace with your actual favorites data
                       NoteCard(
-                        title: 'Favorite Document 1',
-                        content: 'Brief description of the document',
+                        title: 'Favorite Document 1'
                       ),
                       NoteCard(
-                        title: 'Favorite Document 2',
-                        content: 'Brief description of the document',
+                        title: 'Favorite Document 2'
                       ),
                       // ... more NoteCard widgets
                     ],

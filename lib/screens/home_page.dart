@@ -55,8 +55,8 @@ class WelcomeScreen extends StatelessWidget {
                   mainAxisSpacing: 16.0,
                   childAspectRatio: 1.5,
                   children: const [
-                    NoteCard(title: 'Note 1', content: 'Content for Note 1'),
-                    NoteCard(title: 'Note 2', content: 'Content for Note 2'),
+                    NoteCard(title: 'Note 1'),
+                    NoteCard(title: 'Note 2'),
                     // ... other notes
                   ],
                     );
