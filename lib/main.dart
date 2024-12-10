@@ -4,7 +4,9 @@ import 'screens/home_page.dart';
 void main() {
   runApp(
     const MaterialApp(
-      home: HomePage(),
+      home: WelcomeScreen(
+        userName: "Marc Velasquez"
+      )
     )
   );
 }

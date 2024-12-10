@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
-
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -16,20 +14,20 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text('Settings'),
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: const Text('Account'),
+            leading: Icon(Icons.account_circle),
+            title: Text('Account'),
             onTap: () {
               // Navigate to account settings
             },
           ),
           ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notifications'),
+            leading: Icon(Icons.notifications),
+            title: Text('Notifications'),
             trailing: Switch(
               value: _notificationsEnabled,
               onChanged: (bool value) {
@@ -40,8 +38,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.color_lens),
-            title: const Text('Theme'),
+            leading: Icon(Icons.color_lens),
+            title: Text('Theme'),
             trailing: DropdownButton<String>(
               value: _theme,
               items: <String>['Light', 'Dark', 'System']
@@ -59,8 +57,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.location_on),
-            title: const Text('Location'),
+            leading: Icon(Icons.location_on),
+            title: Text('Location'),
             trailing: Switch(
               value: _locationEnabled,
               onChanged: (bool value) {
@@ -71,22 +69,22 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.lock),
-            title: const Text('Privacy'),
+            leading: Icon(Icons.lock),
+            title: Text('Privacy'),
             onTap: () {
               // Navigate to privacy settings
             },
           ),
           ListTile(
-            leading: const Icon(Icons.help),
-            title: const Text('Help & Support'),
+            leading: Icon(Icons.help),
+            title: Text('Help & Support'),
             onTap: () {
               // Navigate to help & support
             },
           ),
           ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('About'),
+            leading: Icon(Icons.info),
+            title: Text('About'),
             onTap: () {
               // Navigate to about page
             },
