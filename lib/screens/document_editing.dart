@@ -42,6 +42,7 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
           color: Colors.grey,
           height: 100,
           width: double.infinity,
+          margin: EdgeInsets.only(right: 16.0), // Add margin to the right
           child: Center(child: Text('Insert image')),
         ),
       ));
@@ -84,7 +85,10 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
       final response = await http.get(Uri.parse(imageUrl));
       if (response.statusCode == 200) {
         setState(() {
-          _blocks.add(Image.network(imageUrl));
+          _blocks.add(Container(
+            margin: EdgeInsets.only(right: 16.0), // Add margin to the right
+            child: Image.network(imageUrl),
+          ));
         });
       } else {
         _showSnackBar('Image cannot be found');
