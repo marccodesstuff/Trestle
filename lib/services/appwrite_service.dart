@@ -112,4 +112,20 @@ class AppWriteService {
       print('Error saving document: $e');
     }
   }
+
+  Future<List<Map<String, dynamic>>> fetchRecentDocuments() async {
+    final client = Client().setEndpoint('https://cloud.appwrite.io/v1').setProject('675448ef003e37a9488a');
+    final _databases = Databases(client);
+    try {
+      final response = await _databases.listDocuments(
+        databaseId: 'trestle_notes',
+        collectionId: 'trestle_docs',
+        queries: [Query.orderDesc('date_updated'), Query.limit(10)], // Fetch the 10 most recently updated documents
+      );
+      return response.documents.map((doc) => doc.data).toList();
+    } catch (e) {
+      print('Error fetching recent documents: $e');
+      return [];
+    }
+  }
 }
