@@ -26,22 +26,34 @@ class FavoritesPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                children: const [
-                  // Replace with your actual favorites data
-                  NoteCard(
-                    title: 'Favorite Document 1',
-                    content: 'Brief description of the document',
-                  ),
-                  NoteCard(
-                    title: 'Favorite Document 2',
-                    content: 'Brief description of the document',
-                  ),
-                  // ... more DocumentCard widgets
-                ],
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  int crossAxisCount = constraints.maxWidth > 600
+                      ? 3
+                      : constraints.maxWidth > 400
+                          ? 2
+                          : 1;
+                  return GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    childAspectRatio: 1.5,
+                    children: const [
+                      // Replace with your actual favorites data
+                      NoteCard(
+                        title: 'Favorite Document 1',
+                        content: 'Brief description of the document',
+                      ),
+                      NoteCard(
+                        title: 'Favorite Document 2',
+                        content: 'Brief description of the document',
+                      ),
+                      // ... more NoteCard widgets
+                    ],
+                  );
+                },
               ),
             ),
           ],

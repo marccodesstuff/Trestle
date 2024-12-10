@@ -29,7 +29,10 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
   void _addTextBlock() {
     setState(() {
       _blocks.add(TextField(
-        decoration: InputDecoration(hintText: 'Enter text here'),
+        decoration: InputDecoration(
+          hintText: 'Enter text here',
+          contentPadding: EdgeInsets.zero, // Remove padding around text
+        ),
       ));
     });
   }
@@ -41,58 +44,78 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _titleController,
-          decoration: InputDecoration(hintText: 'Document Title'),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: TextField(
+        controller: _titleController,
+        decoration: InputDecoration(hintText: 'Document Title'),
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.save),
+          onPressed: _saveDocument,
         ),
-        actions: [
+      ],
+    ),
+    body: ReorderableListView(
+      onReorder: (int oldIndex, int newIndex) {
+        setState(() {
+          if (newIndex > oldIndex) {
+            newIndex -= 1;
+          }
+          final Widget item = _blocks.removeAt(oldIndex);
+          _blocks.insert(newIndex, item);
+        });
+      },
+      children: _blocks
+          .asMap()
+          .map((index, block) => MapEntry(
+              index,
+              IntrinsicHeight(
+                key: ValueKey(index), // Add a unique key for each widget
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0), // Add padding
+                        child: block,
+                      ),
+                    ),
+                    ReorderableDragStartListener(
+                      index: index,
+                      child: Icon(Icons.drag_handle),
+                    ),
+                  ],
+                ),
+              )))
+          .values
+          .toList(),
+    ),
+    bottomNavigationBar: BottomAppBar(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
           IconButton(
-            icon: Icon(Icons.save),
-            onPressed: _saveDocument,
+            icon: Icon(Icons.text_fields),
+            onPressed: _addTextBlock,
+          ),
+          IconButton(
+            icon: Icon(Icons.image),
+            onPressed: _addImageBlock,
           ),
         ],
       ),
-      body: ReorderableListView(
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (newIndex > oldIndex) {
-              newIndex -= 1;
-            }
-            final Widget item = _blocks.removeAt(oldIndex);
-            _blocks.insert(newIndex, item);
-          });
-        },
-        children: _blocks.map((block) {
-          return ListTile(
-            key: ValueKey(block),
-            title: block,
-          );
-        }).toList(),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              icon: Icon(Icons.text_fields),
-              onPressed: _addTextBlock,
-            ),
-            IconButton(
-              icon: Icon(Icons.image),
-              onPressed: _addImageBlock,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}
+
 
   void _saveDocument() {
     // Implement save document logic here
@@ -168,7 +191,8 @@ class _ImageBlockState extends State<ImageBlock> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _showImageOptionsDialog() {

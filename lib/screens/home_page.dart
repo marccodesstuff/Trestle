@@ -1,3 +1,5 @@
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:1422427754.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:785353042.
 import 'package:flutter/material.dart';
 
 import '../widgets/note_card.dart';
@@ -16,7 +18,8 @@ class WelcomeScreen extends StatelessWidget {
       ),
       drawer: const SideNavigationBar(),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView( // Wrap with SingleChildScrollView
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,9 +40,17 @@ class WelcomeScreen extends StatelessWidget {
                 const Text('Recents',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 16),
-                GridView.count(
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    int crossAxisCount = constraints.maxWidth > 600
+                        ? 3
+                        : constraints.maxWidth > 400
+                            ? 2
+                            : 1;
+                    return GridView.count(
                   shrinkWrap: true,
-                  crossAxisCount: 3,
+                        physics: const NeverScrollableScrollPhysics(), // Disable GridView scrolling
+                      crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   childAspectRatio: 1.5,
@@ -48,10 +59,13 @@ class WelcomeScreen extends StatelessWidget {
                     NoteCard(title: 'Note 2', content: 'Content for Note 2'),
                     // ... other notes
                   ],
+                    );
+                  },
                 )
               ],
             ),
           ],
+          ),
         ),
       ),
     );
