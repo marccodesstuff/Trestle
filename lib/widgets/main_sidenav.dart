@@ -35,7 +35,7 @@ class SideNavigationBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => const DocumentEditorPage(
-                          documentTitle: 'New Document',
+                          documentTitle: 'New Document'
                         )),
               );
             },
