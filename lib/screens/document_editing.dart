@@ -28,7 +28,7 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
 
   void _addTextBlock() {
     setState(() {
-      _blocks.add(TextField(
+      _blocks.add(const TextField(
         decoration: InputDecoration(
           hintText: 'Enter text here',
           contentPadding: EdgeInsets.zero, // Remove padding around text
@@ -54,11 +54,11 @@ Widget build(BuildContext context) {
     appBar: AppBar(
       title: TextField(
         controller: _titleController,
-        decoration: InputDecoration(hintText: 'Document Title'),
+        decoration: const InputDecoration(hintText: 'Document Title'),
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.save),
+          icon: const Icon(Icons.save),
           onPressed: _saveDocument,
         ),
       ],
@@ -90,7 +90,7 @@ Widget build(BuildContext context) {
                     ),
                     ReorderableDragStartListener(
                       index: index,
-                      child: Icon(Icons.drag_handle),
+                      child: const Icon(Icons.drag_handle),
                     ),
                   ],
                 ),
@@ -103,11 +103,11 @@ Widget build(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            icon: Icon(Icons.text_fields),
+            icon: const Icon(Icons.text_fields),
             onPressed: _addTextBlock,
           ),
           IconButton(
-            icon: Icon(Icons.image),
+            icon: const Icon(Icons.image),
             onPressed: _addImageBlock,
           ),
         ],
@@ -123,6 +123,8 @@ Widget build(BuildContext context) {
 }
 
 class ImageBlock extends StatefulWidget {
+  const ImageBlock({super.key});
+
   @override
   _ImageBlockState createState() => _ImageBlockState();
 }
@@ -139,20 +141,20 @@ class _ImageBlockState extends State<ImageBlock> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Insert Image URL'),
+          title: const Text('Insert Image URL'),
           content: TextField(
             controller: imageUrlController,
-            decoration: InputDecoration(hintText: 'Enter image URL'),
+            decoration: const InputDecoration(hintText: 'Enter image URL'),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Insert'),
+              child: const Text('Insert'),
               onPressed: () {
                 Navigator.of(context).pop();
                 _insertImage(imageUrlController.text);
@@ -201,11 +203,11 @@ class _ImageBlockState extends State<ImageBlock> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Image Options'),
+          title: const Text('Image Options'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Height'),
+              const Text('Height'),
               Slider(
                 value: _imageHeight,
                 min: 50,
@@ -220,18 +222,18 @@ class _ImageBlockState extends State<ImageBlock> {
               ),
               DropdownButton<Alignment>(
                 value: _alignment,
-                items: [
+                items: const [
                   DropdownMenuItem(
-                    child: Text('Left'),
                     value: Alignment.centerLeft,
+                    child: Text('Left'),
                   ),
                   DropdownMenuItem(
-                    child: Text('Center'),
                     value: Alignment.center,
+                    child: Text('Center'),
                   ),
                   DropdownMenuItem(
-                    child: Text('Right'),
                     value: Alignment.centerRight,
+                    child: Text('Right'),
                   ),
                 ],
                 onChanged: (value) {
@@ -242,19 +244,19 @@ class _ImageBlockState extends State<ImageBlock> {
               ),
               TextField(
                 controller: newImageUrlController,
-                decoration: InputDecoration(hintText: 'Enter new image URL'),
+                decoration: const InputDecoration(hintText: 'Enter new image URL'),
               ),
             ],
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Save'),
+              child: const Text('Save'),
               onPressed: () {
                 if (newImageUrlController.text.isNotEmpty) {
                   _insertImage(newImageUrlController.text);
@@ -280,8 +282,8 @@ class _ImageBlockState extends State<ImageBlock> {
                 width: double.infinity,
                 child: Center(
                   child: _isLoading
-                      ? CircularProgressIndicator()
-                      : Text('Insert image'),
+                      ? const CircularProgressIndicator()
+                      : const Text('Insert image'),
                 ),
               ),
             )
