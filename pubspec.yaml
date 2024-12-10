@@ -10,7 +10,9 @@ dependencies:
   appwrite: ^13.0.0
   flutter:
     sdk: flutter
-  http: ^1.2.2
+  http: ^0.13.0
+  googleapis: ^9.0.0
+  googleapis_auth: ^1.0.0
 
 dev_dependencies:
   flutter_test:

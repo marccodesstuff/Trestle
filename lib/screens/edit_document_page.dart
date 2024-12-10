@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../services/appwrite_service.dart';
+import '../services/google_services.dart';
 import '../widgets/toolbar.dart';
-import 'dart:convert';
 import '../models/image_block.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class EditDocumentPage extends StatefulWidget {
@@ -78,6 +79,28 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
     Navigator.of(context).pop();
   }
 
+  void _exportToGoogleDocs() async {
+    final googleService = GoogleService('YOUR_ACCESS_TOKEN');
+    final content = _blocks.map((block) {
+      if (block is TextField) {
+        return block.controller?.text ?? '';
+      } else if (block is ImageBlock) {
+        return '[Image: ${block.imageUrl}]';
+      }
+      return '';
+    }).join('\n');
+
+    final optimizedContent = await googleService.optimizeLayout(content);
+    if (optimizedContent != null) {
+      final documentId = await googleService.createGoogleDoc(_titleController.text, optimizedContent);
+      if (documentId != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Document exported to Google Docs: $documentId')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +115,10 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: _updateDocument,
+          ),
+          IconButton(
+            icon: const Icon(Icons.cloud_upload),
+            onPressed: _exportToGoogleDocs,
           ),
         ],
       ),
