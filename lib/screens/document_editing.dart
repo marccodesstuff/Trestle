@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../services/appwrite_service.dart'; // Import the AppWriteService
 
 class DocumentEditorPage extends StatefulWidget {
   final String documentTitle;
@@ -13,6 +14,7 @@ class DocumentEditorPage extends StatefulWidget {
 class _DocumentEditorPageState extends State<DocumentEditorPage> {
   final List<Widget> _blocks = [];
   late TextEditingController _titleController;
+  final AppWriteService _appWriteService = AppWriteService(); // Initialize AppWriteService
 
   @override
   void initState() {
@@ -28,8 +30,9 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
 
   void _addTextBlock() {
     setState(() {
-      _blocks.add(const TextField(
-        decoration: InputDecoration(
+      _blocks.add(TextField(
+        controller: TextEditingController(), // Assign a controller
+        decoration: const InputDecoration(
           hintText: 'Enter text here',
           contentPadding: EdgeInsets.zero, // Remove padding around text
         ),
@@ -39,86 +42,83 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
 
   void _addImageBlock() {
     setState(() {
-      _blocks.add(ImageBlock());
+      _blocks.add(const ImageBlock());
     });
   }
 
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+  void _saveDocument() async {
+    await _appWriteService.saveDocument(_titleController.text, _blocks);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Document saved successfully')),
+    );
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: TextField(
-        controller: _titleController,
-        decoration: const InputDecoration(hintText: 'Document Title'),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.save),
-          onPressed: _saveDocument,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: TextField(
+          controller: _titleController,
+          decoration: const InputDecoration(hintText: 'Document Title'),
         ),
-      ],
-    ),
-    body: ReorderableListView(
-      onReorder: (int oldIndex, int newIndex) {
-        setState(() {
-          if (newIndex > oldIndex) {
-            newIndex -= 1;
-          }
-          final Widget item = _blocks.removeAt(oldIndex);
-          _blocks.insert(newIndex, item);
-        });
-      },
-      children: _blocks
-          .asMap()
-          .map((index, block) => MapEntry(
-              index,
-              IntrinsicHeight(
-                key: ValueKey(index), // Add a unique key for each widget
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0), // Add padding
-                        child: block,
-                      ),
-                    ),
-                    ReorderableDragStartListener(
-                      index: index,
-                      child: const Icon(Icons.drag_handle),
-                    ),
-                  ],
-                ),
-              )))
-          .values
-          .toList(),
-    ),
-    bottomNavigationBar: BottomAppBar(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
+        actions: [
           IconButton(
-            icon: const Icon(Icons.text_fields),
-            onPressed: _addTextBlock,
-          ),
-          IconButton(
-            icon: const Icon(Icons.image),
-            onPressed: _addImageBlock,
+            icon: const Icon(Icons.save),
+            onPressed: _saveDocument, // Call the save function
           ),
         ],
       ),
-    ),
-  );
-}
-
-
-  void _saveDocument() {
-    // Implement save document logic here
+      body: ReorderableListView(
+        onReorder: (int oldIndex, int newIndex) {
+          setState(() {
+            if (newIndex > oldIndex) {
+              newIndex -= 1;
+            }
+            final Widget item = _blocks.removeAt(oldIndex);
+            _blocks.insert(newIndex, item);
+          });
+        },
+        children: _blocks
+            .asMap()
+            .map((index, block) => MapEntry(
+                index,
+                IntrinsicHeight(
+                  key: ValueKey(index), // Add a unique key for each widget
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0), // Add padding
+                          child: block,
+                        ),
+                      ),
+                      ReorderableDragStartListener(
+                        index: index,
+                        child: const Icon(Icons.drag_handle),
+                      ),
+                    ],
+                  ),
+                )))
+            .values
+            .toList(),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.text_fields),
+              onPressed: _addTextBlock,
+            ),
+            IconButton(
+              icon: const Icon(Icons.image),
+              onPressed: _addImageBlock,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -134,6 +134,8 @@ class _ImageBlockState extends State<ImageBlock> {
   bool _isLoading = false;
   double _imageHeight = 100;
   Alignment _alignment = Alignment.center;
+
+  String? get imageUrl => _imageUrl;
 
   void _showAddImageDialog() {
     TextEditingController imageUrlController = TextEditingController();

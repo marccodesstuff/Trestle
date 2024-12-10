@@ -65,7 +65,7 @@ class SideNavigationBar extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FavoritesPage()),
+                MaterialPageRoute(builder: (context) => const FavoritesPage()),
               );
             },
           ),
