@@ -142,6 +142,7 @@ class _ImageBlockState extends State<ImageBlock> {
   }
 
   void _insertImage(String imageUrl) async {
+    if (imageUrl.isEmpty) return;
     setState(() {
       _isLoading = true;
     });
@@ -171,6 +172,7 @@ class _ImageBlockState extends State<ImageBlock> {
   }
 
   void _showImageOptionsDialog() {
+    TextEditingController newImageUrlController = TextEditingController();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -214,12 +216,25 @@ class _ImageBlockState extends State<ImageBlock> {
                   });
                 },
               ),
+              TextField(
+                controller: newImageUrlController,
+                decoration: InputDecoration(hintText: 'Enter new image URL'),
+              ),
             ],
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Close'),
+              child: Text('Cancel'),
               onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Save'),
+              onPressed: () {
+                if (newImageUrlController.text.isNotEmpty) {
+                  _insertImage(newImageUrlController.text);
+                }
                 Navigator.of(context).pop();
               },
             ),
