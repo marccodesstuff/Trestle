@@ -79,6 +79,11 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
     });
   }
 
+  void _saveDocument() {
+    // Implement your save logic here
+    print('Document saved');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +102,12 @@ class _DocumentEditorPageState extends State<DocumentEditorPage> {
           ),
           style: const TextStyle(color: Colors.black, fontSize: 20),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: _saveDocument,
+          ),
+        ],
       ),
       body: ReorderableListView(
         padding: const EdgeInsets.all(16.0),
