@@ -94,12 +94,12 @@ class AppWriteService {
         await _databases.createDocument(
           databaseId: 'trestle_notes',
           collectionId: 'trestle_docs',
-          documentId: ID.unique(), // Generate a unique ID
+          documentId: ID.unique(), // You must have the document ID for this one
           data: {
             'id': ID.unique().toString(),
             'title': documentTitle,
             'content': blockDataJson,
-            'date_created': DateTime.now().toIso8601String(),
+            'date_created': DateTime.now().toIso8601String(), // This one is not needed since it's an old document
             'date_updated': DateTime.now().toIso8601String(),
           },
         );
