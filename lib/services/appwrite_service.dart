@@ -48,7 +48,21 @@ class AppWriteService {
           data: {
             'id': ID.unique().toString(),
             'title': documentTitle,
-            'content': blockDataJson, // Save as JSON string
+            'content': blockDataJson,
+            'date_created': DateTime.now().toIso8601String(),
+            'date_updated': DateTime.now().toIso8601String(),
+          },
+        );
+      } catch (e) {
+        print('Error creating document: $e');
+      }
+
+      print('Document saved successfully: $documentTitle');
+    } catch (e) {
+      print('Error saving document: $e');
+    }
+  }
+
           },
         );
       } catch (e) {
