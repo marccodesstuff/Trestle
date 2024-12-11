@@ -127,7 +127,8 @@ class _ImageBlockState extends State<ImageBlock> {
               ),
               TextField(
                 controller: newImageUrlController,
-                decoration: const InputDecoration(hintText: 'Enter new image URL'),
+                decoration:
+                    const InputDecoration(hintText: 'Enter new image URL'),
               ),
             ],
           ),

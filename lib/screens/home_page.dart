@@ -35,6 +35,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trestle'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              _fetchRecentDocuments();
+            },
+          ),
+        ],
       ),
       drawer: const SideNavigationBar(),
       body: Padding(

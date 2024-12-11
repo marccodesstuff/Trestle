@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/appwrite_service.dart';
 import '../widgets/toolbar.dart';
 import 'dart:convert';
-import '../models/image_block.dart';
+import '../models/image_blcok.dart';
 import 'package:http/http.dart' as http;
 
 class EditDocumentPage extends StatefulWidget {
@@ -27,7 +27,8 @@ class _EditDocumentPageState extends State<EditDocumentPage> {
   }
 
   Future<void> _fetchDocument() async {
-    final document = await _appWriteService.fetchDocumentById(widget.documentId);
+    final document =
+        await _appWriteService.fetchDocumentById(widget.documentId);
     if (document != null) {
       setState(() {
         _titleController = TextEditingController(text: document['title']);

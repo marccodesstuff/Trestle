@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/home_page.dart';
-import '../screens/favorites_page.dart';
 import '../screens/document_editing.dart';
-import '../screens/settings_page.dart';
 
 class SideNavigationBar extends StatelessWidget {
   const SideNavigationBar({super.key});
@@ -35,8 +33,7 @@ class SideNavigationBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => const DocumentEditorPage(
-                          documentTitle: 'New Document'
-                        )),
+                        documentTitle: 'New Document')),
               );
             },
           ),
@@ -57,26 +54,6 @@ class SideNavigationBar extends StatelessWidget {
             title: const Text('All Documents'),
             onTap: () {
               // Handle navigation to notes
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.star),
-            title: const Text('Favorites'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FavoritesPage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsPage()),
-              );
             },
           ),
           ListTile(

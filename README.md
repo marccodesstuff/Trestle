@@ -1,31 +1,16 @@
-# Trestle
+# myapp
 
-A block-based word processor
+A new Flutter project.
 
-## Features
+## Getting Started
 
-- Block-based content editing
-- Support for text, image, and divider blocks
-- Markdown rendering
-- Light and dark themes
-- User authentication with AppWrite
-- Responsive design
+This project is a starting point for a Flutter application.
 
-## Development Setup
+A few resources to get you started if this is your first Flutter project:
 
-### Prerequisites
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-- [Flutter](https://flutter.dev/docs/get-started/install) (version 3.24.0 or higher)
-- [Dart](https://dart.dev/get-dart)
-- [Google IDX](https://developers.google.com/idx) (for development environment)
-- [AppWrite](https://appwrite.io/) (for backend services)
-
-### Installation
-
-1. **Clone the repository:**
-```shell
-sh
-git clone https://github.com/yourusername/Trestle.git
-cd Trestle
-flutter pub get
-```
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
